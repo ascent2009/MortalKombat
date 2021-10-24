@@ -1,5 +1,13 @@
 const $arenas = document.querySelector(".arenas");
-const $randomButton = document.querySelector(".button");
+const $submitButton = document.querySelector(".button");
+const $formFight = document.querySelector(".control");
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+};
+const ATTACK = ["head", "body", "foot"];
 
 const player1 = {
   player: 1,
@@ -10,9 +18,9 @@ const player1 = {
   attack() {
     console.log(this.name + " " + "Fight...");
   },
-  changeHP: changeHP,
-  elHP: elHP,
-  renderHP: renderHP,
+  changeHP,
+  elHP,
+  renderHP,
 };
 
 const player2 = {
@@ -24,10 +32,13 @@ const player2 = {
   attack() {
     console.log(this.name + " " + "Fight...");
   },
-  changeHP: changeHP,
-  elHP: elHP,
-  renderHP: renderHP,
+  changeHP,
+  elHP,
+  renderHP,
 };
+
+// массив участвующих в игре
+const players = [player1, player2];
 
 function createElement(tag, className) {
   const $tag = document.createElement(tag);
@@ -107,17 +118,50 @@ function createReloadButton() {
   return $reloadButton;
 }
 
-$randomButton.addEventListener("click", function () {
-  player1.changeHP(getRandom(20));
-  player2.changeHP(getRandom(20));
+// функция случайного выбора игроков из массива участвующих
+function choosePlayer() {
+  const player = players[getRandom(2) - 1];
+  return player;
+}
 
-  player1.renderHP();
-  player2.renderHP();
+$arenas.append(createPlayer(player1));
+$arenas.append(createPlayer(player2));
+
+function enemyAttack() {
+  const hit = ATTACK[getRandom(3) - 1];
+  const defence = ATTACK[getRandom(3) - 1];
+  return {
+    value: getRandom(HIT[hit]),
+    hit,
+    defence,
+  };
+}
+
+$formFight.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const enemy = enemyAttack();
+
+  const attack = {};
+  for (let item of $formFight) {
+    if (item.checked && item.name === "hit") {
+      attack.value = getRandom(HIT[item.value]);
+      attack.hit = item.value;
+    }
+    if (item.checked && item.name === "defence") {
+      attack.defence = item.value;
+    }
+    item.checked = false;
+  }
+
+  const chosenPlayer = choosePlayer();
+  chosenPlayer.changeHP(getRandom(attack.value));
+  chosenPlayer.renderHP();
 
   if (player1.hp === 0 || player2.hp === 0) {
-    $randomButton.disabled = true;
-    $randomButton.innerHTML = "Game is over!";
-    $randomButton.style.backgroundColor = "grey";
+    $submitButton.disabled = true;
+    $submitButton.innerHTML = "Game is over!";
+    $submitButton.style.backgroundColor = "grey";
+    $formFight.style.opacity = "0.5";
 
     createReloadButton().addEventListener("click", function () {
       window.location.reload();
@@ -133,6 +177,3 @@ $randomButton.addEventListener("click", function () {
     $arenas.append(playResult());
   }
 });
-
-$arenas.append(createPlayer(player1));
-$arenas.append(createPlayer(player2));
