@@ -1,3 +1,7 @@
+import getRandom from "./utils.js";
+
+const $chat = document.querySelector(".chat");
+
 export const logs = {
   start:
     "Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.",
@@ -37,4 +41,37 @@ export const logs = {
     "[playerKick] обманулся и жестокий [playerDefence] блокировал удар стопой в солнечное сплетение.",
   ],
   draw: "Ничья - это тоже победа!",
+};
+
+export const generateLogs = (type, player1, player2) => {
+  const time = new Date().toLocaleTimeString("ru-Ru", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  let text = "";
+
+  switch (type) {
+    case "hit":
+      text = `${time} - ${logs[type][getRandom(logs.hit.length - 1)]
+        .replace("[playerKick]", player1.name)
+        .replace("[playerDefence]", player2.name)} ${player2.hp - 100}[${
+        player2.hp
+      }/100]`;
+      break;
+    case "end":
+      text = logs[type][getRandom(logs.end.length - 1)]
+        .replace("[playerWins]", player1.name)
+        .replace("[playerLose]", player2.name);
+      break;
+    case "draw":
+      text = "Ничья - это тоже победа!";
+      break;
+    default:
+      text = logs[type]
+        .replace("[time]", time)
+        .replace("[player1]", player1.name)
+        .replace("[player2]", player2.name);
+  }
+  const el = `<p>${text}</p>`;
+  $chat.insertAdjacentHTML("afterbegin", el);
 };
