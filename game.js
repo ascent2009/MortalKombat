@@ -5,17 +5,16 @@ import { showResult } from "./renderResults.js";
 import { generateLogs } from "./logs.js";
 
 class Game {
-  constructor(props) {
-    this.$arenas = props.$arenas;
-    this.$formFight = props.$formFight;
-  }
+  constructor() {}
 
   start = () => {
+    const $arenas = document.querySelector(".arenas");
+    const $formFight = document.querySelector(".control");
     generateLogs("start", player1, player2);
-    this.$arenas.append(createPlayer(player1));
-    this.$arenas.append(createPlayer(player2));
+    $arenas.append(createPlayer(player1));
+    $arenas.append(createPlayer(player2));
 
-    this.$formFight.addEventListener("submit", (e) => {
+    $formFight.addEventListener("submit", (e) => {
       e.preventDefault();
       const enemy = enemyAttack();
       const player = playerAttack();
