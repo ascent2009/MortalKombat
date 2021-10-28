@@ -10,7 +10,7 @@ const HIT = {
 
 const ATTACK = ["head", "body", "foot"];
 
-export const enemyAttack = () => {
+const enemyAttack = () => {
   const hitEn = ATTACK[getRandom(3) - 1];
   const defenceEn = ATTACK[getRandom(3) - 1];
   return {
@@ -20,7 +20,7 @@ export const enemyAttack = () => {
   };
 };
 
-export const playerAttack = () => {
+const playerAttack = () => {
   const attack = {};
   for (let item of $formFight) {
     if (item.checked && item.name === "hit") {
@@ -35,3 +35,5 @@ export const playerAttack = () => {
 
   return attack;
 };
+
+export { enemyAttack, playerAttack };

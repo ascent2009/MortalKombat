@@ -6,7 +6,7 @@ const $arenas = document.querySelector(".arenas");
 const $submitButton = document.querySelector(".button");
 const $formFight = document.querySelector(".control");
 
-export const playResult = (name) => {
+const playResult = (name) => {
   const $resultTitle = createElement("div", "loseTitle");
   if (name) {
     $resultTitle.innerText = name + " wins";
@@ -17,7 +17,7 @@ export const playResult = (name) => {
   return $resultTitle;
 };
 
-export const showResult = () => {
+const showResult = () => {
   if (player1.hp === 0 || player2.hp === 0) {
     $submitButton.disabled = true;
     $submitButton.innerHTML = "Game is over!";
@@ -40,3 +40,5 @@ export const showResult = () => {
     generateLogs("draw");
   }
 };
+
+export { playResult, showResult };

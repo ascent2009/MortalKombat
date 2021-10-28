@@ -2,7 +2,7 @@ import getRandom from "./utils.js";
 
 const $chat = document.querySelector(".chat");
 
-export const logs = {
+const logs = {
   start:
     "Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.",
   end: [
@@ -43,7 +43,7 @@ export const logs = {
   draw: "Ничья - это тоже победа!",
 };
 
-export const generateLogs = (type, player1, player2) => {
+const generateLogs = (type, player1, player2) => {
   const time = new Date().toLocaleTimeString("ru-Ru", {
     hour: "2-digit",
     minute: "2-digit",
@@ -75,3 +75,5 @@ export const generateLogs = (type, player1, player2) => {
   const el = `<p>${text}</p>`;
   $chat.insertAdjacentHTML("afterbegin", el);
 };
+
+export { logs, generateLogs };

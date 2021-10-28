@@ -1,29 +1,39 @@
 import { changeHP, elHP, renderHP } from "./HPcontrol.js";
 
-export const player1 = {
+class Player {
+  constructor(props) {
+    this.player = props.player;
+    this.name = props.name;
+    this.hp = props.hp;
+    this.img = props.img;
+    this.weapon = props.weapon;
+  }
+  attack = () => console.log(this.name + " " + "Fight...");
+  changeHP = changeHP;
+  elHP = elHP;
+  renderHP = renderHP;
+}
+
+class Player1 extends Player {
+  constructor(props) {
+    super(props);
+  }
+}
+
+const player1 = new Player({
   player: 1,
   name: "Scorpion",
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
   weapon: ["sword"],
-  attack() {
-    console.log(this.name + " " + "Fight...");
-  },
-  changeHP,
-  elHP,
-  renderHP,
-};
+});
 
-export const player2 = {
+const player2 = new Player1({
   player: 2,
   name: "Sonya",
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/sonya.gif",
   weapon: ["spear"],
-  attack() {
-    console.log(this.name + " " + "Fight...");
-  },
-  changeHP,
-  elHP,
-  renderHP,
-};
+});
+
+export { player1, player2 };
