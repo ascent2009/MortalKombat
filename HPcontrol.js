@@ -1,4 +1,4 @@
-export function changeHP(num) {
+function changeHP(num) {
   this.hp -= num;
 
   if (this.hp <= 0) {
@@ -7,15 +7,15 @@ export function changeHP(num) {
   return this.hp;
 }
 
-export function elHP() {
-  const $playerLife = document.querySelector(
-    ".player" + this.player + " .life"
-  );
+function elHP() {
+  const $playerLife = document.querySelector(`.player${this.player} .life`);
 
   return $playerLife;
 }
 
-export function renderHP() {
-  this.elHP().style.width = this.hp + "%";
+function renderHP() {
+  this.elHP().style.width = `${this.hp}%`;
   return this.elHP();
 }
+
+export { changeHP, elHP, renderHP };
