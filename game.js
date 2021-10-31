@@ -56,6 +56,8 @@ class Game {
 
         showResult();
       });
+    } else {
+      window.location.reload();
     }
   };
 }
