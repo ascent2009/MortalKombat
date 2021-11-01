@@ -14,26 +14,26 @@ class Player {
   renderHP = renderHP;
 }
 
-class Player1 extends Player {
-  constructor(props) {
-    super(props);
-  }
-}
+const getPlayer = async () => {
+  const body = fetch(
+    "https://reactmarathon-api.herokuapp.com/api/mk/player/choose"
+  ).then((res) => res.json());
+  return body;
+};
+
+const p1 = JSON.parse(localStorage.getItem("player1"));
+const p2 = await getPlayer();
 
 const player1 = new Player({
+  ...p1,
   player: 1,
-  name: "Scorpion",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
-  weapon: ["sword"],
+  rootSelector: "arenas",
 });
 
-const player2 = new Player1({
+const player2 = new Player({
+  ...p2,
   player: 2,
-  name: "Sonya",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/sonya.gif",
-  weapon: ["spear"],
+  rootSelector: "arenas",
 });
 
 export { player1, player2 };

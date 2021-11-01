@@ -25,7 +25,7 @@ const showResult = () => {
     $formFight.style.opacity = "0.5";
 
     createReloadButton().addEventListener("click", () => {
-      window.location.reload();
+      window.location.pathname = "index.html";
     });
   }
 

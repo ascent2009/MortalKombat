@@ -5,36 +5,60 @@ import { showResult } from "./renderResults.js";
 import { generateLogs } from "./logs.js";
 
 class Game {
-  constructor() {}
+  constructor() {
+    this.$arenas = document.querySelector(".arenas");
+    this.$formFight = document.querySelector(".control");
+  }
+
+  sendPlayerAttack = async (playerAttack) => {
+    const { hitPl, defencePl } = playerAttack;
+    const body = await fetch(
+      "http://reactmarathon-api.herokuapp.com/api/mk/player/fight",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          hit: hitPl,
+          defence: defencePl,
+        }),
+      }
+    );
+    let result = await body.json();
+    console.log(result);
+    return result;
+  };
 
   start = () => {
-    const $arenas = document.querySelector(".arenas");
-    const $formFight = document.querySelector(".control");
-    generateLogs("start", player1, player2);
-    $arenas.append(createPlayer(player1));
-    $arenas.append(createPlayer(player2));
+    if (player1.name !== player2.name) {
+      generateLogs("start", player1, player2);
+      this.$arenas.append(createPlayer(player1));
+      this.$arenas.append(createPlayer(player2));
 
-    $formFight.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const enemy = enemyAttack();
-      const player = playerAttack();
-      const { hitEn, defenceEn, valueEn } = enemy;
-      const { hitPl, defencePl, valuePl } = player;
+      this.$formFight.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const enemy = enemyAttack();
+        const player = playerAttack();
+        const { hitEn, defenceEn, valueEn } = enemy;
+        const { hitPl, defencePl, valuePl } = player;
 
-      if (defencePl !== hitEn) {
-        player1.changeHP(valueEn);
-        player1.renderHP();
-        generateLogs("hit", player2, player1);
-      }
+        this.sendPlayerAttack(player);
 
-      if (defenceEn !== hitPl) {
-        player2.changeHP(valuePl);
-        player2.renderHP();
-        generateLogs("hit", player1, player2);
-      }
+        if (defencePl !== hitEn) {
+          player1.changeHP(valueEn);
+          player1.renderHP();
+          generateLogs("hit", player2, player1);
+        }
 
-      showResult();
-    });
+        if (defenceEn !== hitPl) {
+          player2.changeHP(valuePl);
+          player2.renderHP();
+          generateLogs("hit", player1, player2);
+        }
+
+        showResult();
+      });
+    } else {
+      window.location.reload();
+    }
   };
 }
 
